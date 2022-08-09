@@ -52,8 +52,6 @@ SKIP :
 TOKEN :
 {
     <every: "every">|
-    <minute: "minute">|
-    <hour: "hour">|
     <day: "day">|
     <month: "month">|
     <at: "at">|
