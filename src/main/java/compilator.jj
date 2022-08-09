@@ -1,3 +1,6 @@
+/**
+* Definição das opções utilizads para a geração do código fonte
+*/
 options {
   LOOKAHEAD = 1;
   CHOICE_AMBIGUITY_CHECK = 2;
@@ -19,6 +22,10 @@ options {
 }
 
 
+/**
+* Definição da classe do compilador tendo um método main que receberá o input 
+* e realizará o processo de compilação a partir da produção E
+*/
 PARSER_BEGIN(Parser)
 
 public class Parser {
@@ -30,11 +37,18 @@ public class Parser {
 }
 PARSER_END(Parser)
 
+/**
+* Definição dos elementos que serão ignorados pelo compilador.
+*/
 SKIP :
 {
-    "\r" | "\t"
+    "\r" | "\t" | "\n"
 }
 
+/**
+* Definição dos tokens que serão utilizados nas produções, sendo a maioria palavras-chaves 
+* com exceção da regex que é utilizada para definir um número inteiro.
+*/
 TOKEN :
 {
     <every: "every">|
@@ -50,9 +64,11 @@ TOKEN :
     <separator: ":">|
     <num: ["0"-"9"](["0"-"9"])*>|
     <space: " ">|
-    <EOL: "\n">
 }
 
+/**
+* Definição das produções utilizando dos tokens para montagem da gramática
+*/
 void E():
 {
     String t;
