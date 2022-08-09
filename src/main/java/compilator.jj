@@ -56,14 +56,11 @@ TOKEN :
     <hour: "hour">|
     <day: "day">|
     <month: "month">|
-    <minutes: "minutes">|
-    <hours: "hours">|
-    <days: "days">|
     <at: "at">|
     <on: "on">|
     <separator: ":">|
-    <num: ["0"-"9"](["0"-"9"])*>|
-    <space: " ">|
+    <num: ["1"-"9"](["0"-"9"])*>|
+    <space: " ">
 }
 
 /**
@@ -72,23 +69,25 @@ TOKEN :
 void E():
 {
     String t;
-}
-{
-    <every>(<space>)?t=T()<EOL>
-        {
-            System.out.println("Translation: " + t);
-        }
-}
-String T():
-{
-    String hour;
-    String minute;
     String p;
 }
 {
-    <day><space><at><space>hour=N()<separator>minute=N()
+    <every>(<space>)?t=T()
         {
-            return String.format("%s %s * * *", minute, hour);
+            System.out.println("Translation: " + t);
+        }
+
+}
+String T():
+{
+    String h;
+    String m;
+    String p;
+}
+{
+    <day><space><at><space>h=N()<separator>m=N()
+        {
+            return String.format("%s %s * * *", m, h);
         }
     |
     p=P()
@@ -98,39 +97,16 @@ String T():
 }
 String P():
 {
-    String day;
-    String hour;
-    String minute;
-    String f;
+    String d;
+    String h;
+    String m;
+    String g;
 }
 {
-    <month><space><on><space><day><space>day=N()<space><at><space>hour=N()<separator>minute=N()
+    <month><space><on><space><day><space>d=N()<space><at><space>h=N()<separator>m=N()
         {
-            return String.format("%s %s %s * *", minute, hour, day);
+            return String.format("%s %s %s * *", m, h, d);
         }
-    |
-    f=F()
-        {
-            return f;
-        }
-}
-String F():
-{
-    String number;
-    String literal;
-}
-{
-    number=N()<space>literal=L()
-    {
-        switch(literal) {
-            case "minutes":
-                return String.format("*/%s * * * *", number);
-            case "hours":
-                return String.format("* */%s * * *", number);
-            case "days":
-                return String.format("* * */%s * *", number);
-        }
-    }
 }
 String N():
 {
@@ -138,26 +114,6 @@ String N():
 }
 {
     t=<num>
-        {
-            return t.image;
-        }
-}
-String L():
-{
-    Token t;
-}
-{
-    t=<minutes>
-        {
-            return t.image;
-        }
-    |
-    t=<hours>
-        {
-            return t.image;
-        }
-    |
-    t=<days>
         {
             return t.image;
         }
